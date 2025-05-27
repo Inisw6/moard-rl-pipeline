@@ -12,8 +12,7 @@ class HierarchicalRecEnv(gym.Env):
         self.observation_space = spaces.Box(
             low=-np.inf,
             high=np.inf,
-            shape=(self.embedder.output_dim(),),
-            dtype=np.float32
+            shape=(self.embedder.output_dim(),)
         )
         # meta: 3종류, content: up to 10 후보
         self.meta_action_space = spaces.Discrete(config['meta_agent']['action_dim'])
@@ -46,3 +45,4 @@ class HierarchicalRecEnv(gym.Env):
             ],
             "current_time": datetime.now()
         }
+

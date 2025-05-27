@@ -7,6 +7,8 @@ from trainer.trainer import Trainer
 from embedder.simple_embedder import SimpleUserEmbedder
 from embedder.utils import time_bucket_fn
 
+from agents.dqn_meta_agent import DQNMetaAgent
+
 def main():
     cfg = yaml.safe_load(open("config/config.yaml"))
 
@@ -23,7 +25,12 @@ def main():
 
     # 3. env + agent 초기화
     env = HierarchicalRecEnv(cfg, user_embedder)
-    meta = MetaAgent(action_dim=meta_action_dim, state_dim=user_state_dim)
+    # meta = MetaAgent(action_dim=meta_action_dim, state_dim=user_state_dim)
+    meta = DQNMetaAgent(
+        state_dim=user_embedder.output_dim(),
+        action_dim=cfg["meta_agent"]["action_dim"],
+        cfg=cfg
+    )
     ctn = ContentAgent(action_dim=content_action_dim, state_dim=content_state_dim)
 
     trainer = Trainer(env, meta, ctn, cfg)
