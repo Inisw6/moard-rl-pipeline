@@ -2,8 +2,9 @@ import numpy as np
 from agents.base_agent import BaseAgent
 
 class ContentAgent(BaseAgent):
-    def __init__(self, config):
-        self.action_dim = config['content_agent']['action_dim']
+    def __init__(self, action_dim, state_dim):
+        self.action_dim = action_dim
+        self.state_dim = state_dim
 
     def select_action(self, state):
         return np.random.randint(self.action_dim)

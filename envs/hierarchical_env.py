@@ -3,11 +3,18 @@ from gym import spaces
 import numpy as np
 
 class HierarchicalRecEnv(gym.Env):
-    def __init__(self, config):
+    def __init__(self, config, user_embedder):
         super().__init__()
+        self.embedder = user_embedder
         self.max_steps = config['env']['max_steps']
+
         # very simple user_state: just zeros
-        self.observation_space = spaces.Box(-1, 1, shape=(config['meta_agent']['state_dim'],), dtype=np.float32)
+        self.observation_space = spaces.Box(
+            low=-np.inf,
+            high=np.inf,
+            shape=(self.embedder.output_dim(),),
+            dtype=np.float32
+        )
         # meta: 3종류, content: up to 10 후보
         self.meta_action_space = spaces.Discrete(config['meta_agent']['action_dim'])
         self.content_action_space = spaces.Discrete(config['content_agent']['action_dim'])
@@ -15,8 +22,9 @@ class HierarchicalRecEnv(gym.Env):
 
     def reset(self):
         self.step_count = 0
-        # dummy user state
-        return np.zeros(self.observation_space.shape, dtype=np.float32)
+        self.current_user = self._generate_fake_user()
+        state = self.embedder.embed(self.current_user)
+        return state
 
     def step(self, action_tuple):
         meta_a, content_a = action_tuple
@@ -28,3 +36,13 @@ class HierarchicalRecEnv(gym.Env):
         next_state = np.zeros(self.observation_space.shape, dtype=np.float32)
         info = {}
         return next_state, reward, done, info
+
+    def _generate_fake_user(self):
+        from datetime import datetime
+        return {
+            "recent_logs": [
+                {"category": ["금융"], "emotion": 0.8, "dwell": 25, "type": "YouTube"},
+                {"category": ["테크"], "emotion": 0.6, "dwell": 15, "type": "Blog"},
+            ],
+            "current_time": datetime.now()
+        }

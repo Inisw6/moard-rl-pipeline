@@ -2,11 +2,9 @@ env:
   max_steps: 5      # 한 에피소드당 스텝 수
 
 meta_agent:
-  state_dim: 20     # 임의 차원
   action_dim: 3     # {YouTube, Blog, News}
 
 content_agent:
-  state_dim: 21     # user_state + meta_one_hot
   action_dim: 10    # 후보 개수(실험시 변경)
 
 train:
