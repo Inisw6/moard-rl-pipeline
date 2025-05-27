@@ -26,7 +26,9 @@ class Trainer:
                 total_r += r
                 # 5) store & learn
                 self.meta.store(state, ma, r, next_state, done)
-                self.ctn.store(c_state, ca, r, next_state, done)
+                next_c_state = np.concatenate([next_state, meta_onehot])
+                self.ctn.store(c_state, ca, r, next_c_state, done)
+                # self.ctn.store(c_state, ca, r, next_state, done)
                 self.meta.learn()
                 self.ctn.learn()
                 state = next_state

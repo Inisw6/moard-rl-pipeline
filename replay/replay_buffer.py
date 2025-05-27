@@ -7,12 +7,19 @@ class ReplayBuffer:
         self.buffer = deque(maxlen=capacity)
 
     def push(self, state, action, reward, next_state, done):
-        self.buffer.append((state, action, reward, next_state, done))
+        # numpy array로 변환해 두기
+        self.buffer.append((
+            np.array(state, dtype=np.float32),
+            int(action),
+            float(reward),
+            np.array(next_state, dtype=np.float32),
+            bool(done)
+        ))
 
     def sample(self, batch_size):
         batch = random.sample(self.buffer, batch_size)
-        state, action, reward, next_state, done = map(np.array, zip(*batch))
-        return state, action, reward, next_state, done
+        states, actions, rewards, next_states, dones = map(np.array, zip(*batch))
+        return states, actions, rewards, next_states, dones
 
     def __len__(self):
         return len(self.buffer)
