@@ -29,10 +29,17 @@ class HierarchicalRecEnv(gym.Env):
         meta_a, content_a = action_tuple
         self.step_count += 1
         # reward: 임의로 랜덤
-        reward = np.random.randn()
+        selected_content = self._get_fake_content(meta_a, content_a)
+        reward = (
+            selected_content['clicked'] * 1.0 +
+            selected_content['emotion'] * 0.3 +
+            selected_content['dwell'] * 0.05
+        )
+
         done = self.step_count >= self.max_steps
         # next_state: still zeros for now
-        next_state = np.zeros(self.observation_space.shape, dtype=np.float32)
+        next_state = self.embedder.embed(self._generate_fake_user())
+        
         info = {}
         return next_state, reward, done, info
 
@@ -46,3 +53,9 @@ class HierarchicalRecEnv(gym.Env):
             "current_time": datetime.now()
         }
 
+    def _get_fake_content(self, meta_action, content_action):
+        return {
+            "clicked": np.random.choice([0, 1]),
+            "emotion": np.random.uniform(-1, 1),  # 감정 점수
+            "dwell": np.random.uniform(0, 30)     # 체류시간 (초)
+        }
