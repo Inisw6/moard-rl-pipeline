@@ -3,9 +3,10 @@ from gym import spaces
 import numpy as np
 
 class HierarchicalRecEnv(gym.Env):
-    def __init__(self, config, user_embedder):
+    def __init__(self, config, user_embedder, reward_function):
         super().__init__()
         self.embedder = user_embedder
+        self.reward_function = reward_function
         self.max_steps = config['env']['max_steps']
 
         # very simple user_state: just zeros
@@ -29,12 +30,8 @@ class HierarchicalRecEnv(gym.Env):
         meta_a, content_a = action_tuple
         self.step_count += 1
         # reward: 임의로 랜덤
-        selected_content = self._get_fake_content(meta_a, content_a)
-        reward = (
-            selected_content['clicked'] * 1.0 +
-            selected_content['emotion'] * 0.3 +
-            selected_content['dwell'] * 0.05
-        )
+        content_info = self._get_fake_content(meta_a, content_a)
+        reward = self.reward_function.calculate(content_info)
 
         done = self.step_count >= self.max_steps
         # next_state: still zeros for now

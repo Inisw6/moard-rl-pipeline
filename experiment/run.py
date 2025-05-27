@@ -10,6 +10,8 @@ from embedder.utils import time_bucket_fn
 from agents.dqn_meta_agent import DQNMetaAgent
 from agents.dqn_content_agent import DQNContentAgent
 
+from reward.click_reward import ClickReward
+
 def main():
     cfg = yaml.safe_load(open("config/config.yaml"))
 
@@ -25,7 +27,8 @@ def main():
     content_state_dim = user_state_dim + meta_action_dim
 
     # 3. env + agent 초기화
-    env = HierarchicalRecEnv(cfg, user_embedder)
+    reward_fn = ClickReward()
+    env = HierarchicalRecEnv(cfg, user_embedder, reward_fn)
     
     user_state = env.reset()
     print("[CHECK] user_state.shape =", user_state.shape)
