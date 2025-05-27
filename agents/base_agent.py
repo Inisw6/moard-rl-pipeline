@@ -1,0 +1,9 @@
+import abc
+
+class BaseAgent(abc.ABC):
+    @abc.abstractmethod
+    def select_action(self, state): ...
+    @abc.abstractmethod
+    def store(self, *args): ...
+    @abc.abstractmethod
+    def learn(self): ...
