@@ -11,3 +11,4 @@ class BaseUserEmbedder(ABC):
     @abstractmethod
     def output_dim(self) -> int:
         pass
+    

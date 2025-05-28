@@ -53,6 +53,6 @@ class HierarchicalRecEnv(gym.Env):
     def _get_fake_content(self, meta_action, content_action):
         return {
             "clicked": np.random.choice([0, 1]),
-            "emotion": np.random.uniform(-1, 1),  # 감정 점수
-            "dwell": np.random.uniform(0, 30)     # 체류시간 (초)
+            "emotion": np.random.uniform(-1, 1),
+            "dwell": np.random.uniform(0, 30)
         }
