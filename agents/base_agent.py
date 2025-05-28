@@ -1,9 +1,9 @@
-import abc
+from abc import ABC, abstractmethod
 
-class BaseAgent(abc.ABC):
-    @abc.abstractmethod
+class BaseAgent(ABC):
+    @abstractmethod
     def select_action(self, state): ...
-    @abc.abstractmethod
+    @abstractmethod
     def store(self, *args): ...
-    @abc.abstractmethod
+    @abstractmethod
     def learn(self): ...
