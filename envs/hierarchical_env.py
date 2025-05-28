@@ -29,7 +29,7 @@ class HierarchicalRecEnv(gym.Env):
     def step(self, action_tuple):
         meta_a, content_a = action_tuple
         self.step_count += 1
-        # reward: 임의로 랜덤
+        
         content_info = self._get_fake_content(meta_a, content_a)
         reward = self.reward_function.calculate(content_info)
 
