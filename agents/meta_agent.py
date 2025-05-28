@@ -1,5 +1,7 @@
 import numpy as np
-from agents.base_agent import BaseAgent
+from agents.base_agent import BaseAgen
+
+# 랜덤을 이용한 Agent 클래스
 
 class MetaAgent(BaseAgent):
     def __init__(self, action_dim, state_dim):
@@ -7,7 +9,6 @@ class MetaAgent(BaseAgent):
         self.state_dim = state_dim
 
     def select_action(self, state):
-        # 완전 랜덤 예제
         return np.random.randint(self.action_dim)
 
     def store(self, *args):

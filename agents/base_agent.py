@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+# Agent 기반 클래스
+
 class BaseAgent(ABC):
     @abstractmethod
     def select_action(self, state):

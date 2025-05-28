@@ -5,6 +5,8 @@ from models.q_network import QNetwork
 from replay.replay_buffer import ReplayBuffer
 from agents.base_agent import BaseAgent
 
+# DQN 기반의 Meta Agent 클래스
+
 class DQNMetaAgent(BaseAgent):
     def __init__(self, state_dim, action_dim, cfg):
         self.state_dim = state_dim
@@ -12,13 +14,16 @@ class DQNMetaAgent(BaseAgent):
 
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+        # Q-networks
         self.q_net = QNetwork(state_dim, action_dim).to(self.device)
         self.target_q_net = QNetwork(state_dim, action_dim).to(self.device)
         self.target_q_net.load_state_dict(self.q_net.state_dict())
 
+        # optimizer & buffer
         self.optimizer = torch.optim.Adam(self.q_net.parameters(), lr=cfg["train"]["lr"])
         self.buffer = ReplayBuffer(capacity=10000)
 
+        # hyperparams
         self.gamma = 0.99
         self.batch_size = cfg["train"]["batch_size"]
         self.epsilon = 1.0

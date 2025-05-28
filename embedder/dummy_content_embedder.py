@@ -1,7 +1,7 @@
-from embedder.content_embedder import ContentEmbedder
+from embedder.base_content_embedder import BaseContentEmbedder
 import numpy as np
 
-class DummyContentEmbedder(ContentEmbedder):
+class DummyContentEmbedder(BaseContentEmbedder):
     def __init__(self, dim=10):
         self._dim = dim
 

@@ -1,6 +1,8 @@
 import numpy as np
 from agents.base_agent import BaseAgent
 
+# 랜덤을 이용한 Agent 클래스
+
 class ContentAgent(BaseAgent):
     def __init__(self, action_dim, state_dim):
         self.action_dim = action_dim

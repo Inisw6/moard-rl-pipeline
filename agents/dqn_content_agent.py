@@ -5,30 +5,32 @@ from agents.base_agent import BaseAgent
 from models.q_network import QNetwork
 from replay.replay_buffer import ReplayBuffer
 
+# DQN 기반의 콘텐츠 에이전트 클래스
+
 class DQNContentAgent(BaseAgent):
     def __init__(self, state_dim, action_dim, cfg):
-        self.state_dim  = state_dim
+        self.state_dim = state_dim
         self.action_dim = action_dim
-        self.device     = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         # Q-networks
-        self.q_net        = QNetwork(state_dim, action_dim).to(self.device)
+        self.q_net = QNetwork(state_dim, action_dim).to(self.device)
         self.target_q_net = QNetwork(state_dim, action_dim).to(self.device)
         self.target_q_net.load_state_dict(self.q_net.state_dict())
 
         # optimizer & buffer
         self.optimizer = torch.optim.Adam(self.q_net.parameters(), lr=cfg["train"]["lr"])
-        self.buffer    = ReplayBuffer(capacity=cfg["train"].get("buffer_size", 10000))
+        self.buffer = ReplayBuffer(capacity=cfg["train"].get("buffer_size", 10000))
 
         # hyperparams
-        tcfg             = cfg["train"]
-        self.gamma       = tcfg.get("gamma", 0.99)
-        self.batch_size  = tcfg.get("batch_size", 64)
-        self.epsilon     = tcfg.get("epsilon_start", 1.0)
+        tcfg = cfg["train"]
+        self.gamma = tcfg.get("gamma", 0.99)
+        self.batch_size = tcfg.get("batch_size", 64)
+        self.epsilon = tcfg.get("epsilon_start", 1.0)
         self.epsilon_min = tcfg.get("epsilon_min", 0.05)
         self.epsilon_dec = tcfg.get("epsilon_decay", 0.995)
         self.update_freq = tcfg.get("update_freq", 100)
-        self.step_count  = 0
+        self.step_count = 0
 
     def select_action(self, state):
         self.step_count += 1

@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod
 import numpy as np
 
-class ContentEmbedder(ABC):
+# Base class for content embedding
+
+class BaseContentEmbedder(ABC):
     @abstractmethod
     def embed(self, content_dict: dict) -> np.ndarray:
         pass
