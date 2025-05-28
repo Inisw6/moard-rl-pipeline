@@ -44,4 +44,10 @@ class Trainer:
                 state = next_state
 
             print(f"Episode {ep} TotalReward {total_r:.2f}")
+        
+
+        print("Training complete. Saving models...")
+        self.meta.save("models/meta_dqn.pt")
+        self.ctn.save("models/content_dqn.pt")
+        print("Models saved.")
 

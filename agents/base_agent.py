@@ -7,3 +7,9 @@ class BaseAgent(ABC):
     def store(self, *args): ...
     @abstractmethod
     def learn(self): ...
+    @abstractmethod
+    def save(self, path: str):
+        raise NotImplementedError
+    @abstractmethod
+    def load(self, path: str):
+        raise NotImplementedError

@@ -67,3 +67,10 @@ class DQNMetaAgent(BaseAgent):
         # target update
         if self.step_count % self.update_freq == 0:
             self.target_q_net.load_state_dict(self.q_net.state_dict())
+
+    def save(self, path: str):
+        torch.save(self.q_net.state_dict(), path)
+
+    def load(self, path: str):
+        self.q_net.load_state_dict(torch.load(path))
+        self.q_net.eval()
