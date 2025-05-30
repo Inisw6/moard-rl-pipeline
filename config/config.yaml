@@ -1,0 +1,13 @@
+env:
+  max_steps: 5      # 한 에피소드당 스텝 수
+
+meta_agent:
+  action_dim: 3     # {YouTube, Blog, News}
+
+content_agent:
+  action_dim: 10    # 후보 개수(실험시 변경)
+
+train:
+  episodes: 100
+  batch_size: 16
+  lr: 0.001
