@@ -1,13 +1,17 @@
 env:
-  max_steps: 5      # 한 에피소드당 스텝 수
+  cold_start: 10
+  max_steps: 100
+  top_k: 20
 
-meta_agent:
-  action_dim: 3     # {YouTube, Blog, News}
-
-content_agent:
-  action_dim: 10    # 후보 개수(실험시 변경)
+agent:
+  eps_start: 1.0
+  eps_min: 0.05
+  eps_decay: 0.995
+  gamma: 0.99
 
 train:
-  episodes: 100
-  batch_size: 16
   lr: 0.001
+  batch_size: 32
+
+replay:
+  capacity: 10000
